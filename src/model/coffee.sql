@@ -1,0 +1,39 @@
+DROP TABLE IF EXISTS "Details";
+DROP TABLE IF EXISTS "Cart";
+DROP TABLE IF EXISTS "User";
+DROP TABLE IF EXISTS "Coffee";
+
+CREATE TABLE IF NOT EXISTS "User" (
+	"Name"	TEXT NOT NULL,
+	"Phone"	TEXT NOT NULL,
+	"Email"	TEXT NOT NULL,
+	"Address"	TEXT NOT NULL,
+	"Loyalty"	INTEGER NOT NULL CHECK("Loyalty" <= 8 AND "Loyalty" >= 0),
+	"Points"	INTEGER NOT NULL CHECK("Points" > 0),
+	PRIMARY KEY("Name","Phone","Email")
+);
+CREATE TABLE IF NOT EXISTS "Coffee" (
+	"Type"	TEXT,
+	"Price"	INTEGER NOT NULL,
+	PRIMARY KEY("Type")
+);
+CREATE TABLE IF NOT EXISTS "Cart" (
+	"ID"	INTEGER,
+	"Status"	TEXT NOT NULL,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "Details" (
+	"ID"	INTEGER,
+	"Type"	TEXT,
+	"Note"	TEXT CHECK("Note" REGEXP "(0|1)(0|1)(0|1|2)(0|1|2)"),
+	"Number"	INTEGER NOT NULL,
+	FOREIGN KEY("Type") REFERENCES "Coffee"("Type"),
+	FOREIGN KEY("ID") REFERENCES "Cart"("ID"),
+	PRIMARY KEY("ID","Type","Note")
+);
+
+INSERT OR IGNORE INTO "User" VALUES("Dang Minh Triet", "0917550612", "triet0612@gmail.com", "123 ABC, Phuong 1, Quan 5, TPHCM", 2, 10);
+INSERT OR IGNORE INTO "Coffee" VALUES("BlackCoffee", 20000);
+INSERT OR IGNORE INTO "Coffee" VALUES("WhiteCoffee", 35000);
+INSERT OR IGNORE INTO "Coffee" VALUES("Cappucino", 35000);
+INSERT OR IGNORE INTO "Coffee" VALUES("Latte", 40000);
