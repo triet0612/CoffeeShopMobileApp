@@ -1,13 +1,14 @@
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import {useState, useEffect} from "react";
-import { CartMod, CoffeeMod } from "../model/Model";
+import { CartMod, CoffeeMod, UserMod } from "../model/Model";
 import { Color, ImageAssets } from "../Assets";
 import { Image } from "expo-image";
-import { Button, Divider, IconButton, List } from "react-native-paper";
-import { useNavigation, NavigationProp, ParamListBase } from "@react-navigation/native";
+import { Button } from "react-native-paper";
+import { useNavigation, NavigationProp, ParamListBase, useIsFocused } from "@react-navigation/native";
 
 export function Order() {
   const navigation = useNavigation<NavigationProp<ParamListBase>>()
+  const focus = useIsFocused();
 
   const [page, setPage] = useState(true);
 
@@ -17,12 +18,12 @@ export function Order() {
       const temp = await CartMod.readOrder();
       setOrder(temp);
     })()
-  }, [page])
+  }, [page, focus])
 
   if (page) {
     return (
       <View style={{flex: 1, flexDirection: "column", margin: 30}}>
-        <View style={{flex: 0.07}}>
+        <View style={{flex: 0.08}}>
         <PageButton text="Order" togglePage={((tx) => {setPage(tx)}).bind(this)}/>
       </View>
         <ScrollView style={{flex: 1}}>
@@ -33,17 +34,19 @@ export function Order() {
           })}
         </ScrollView>
         <View style={{flex: 0.1, justifyContent: "space-between"}}>
-          <Button mode='contained' onPress={() =>{CartMod.completeOrder(); setOrder([]);}} style={{backgroundColor: Color.AppThemeColor}}
-            labelStyle={{fontFamily: "monospace", fontWeight:"bold", fontSize: 18}}>
-              Complete order
-          </Button>
+          { order.filter(val => val.Status == "Waiting").length > 0? 
+            <Button mode='contained' onPress={() =>{CartMod.completeOrder(); UserMod.addPoints();UserMod.addLoyalty(); setOrder([]);}} style={{backgroundColor: Color.AppThemeColor}}
+              labelStyle={{fontFamily: "monospace", fontWeight:"bold", fontSize: 18}}>
+                Complete order
+            </Button>: null
+          }
         </View>
       </View>
     )
   } else if (!page) {
     return (
     <View style={{flex: 1, flexDirection: "column", margin: 30}}>
-      <View style={{flex: 0.07}}>
+      <View style={{flex: 0.08}}>
         <PageButton text="History" togglePage={((tx) => {setPage(tx)}).bind(this)}/>
       </View>
       <ScrollView style={{flex: 1}}>
@@ -53,12 +56,6 @@ export function Order() {
           }
         })}
       </ScrollView>
-      <View style={{flex: 0.1, justifyContent: "space-between"}}>
-        <Button mode='contained' onPress={() =>{navigation.navigate("Home")}} style={{backgroundColor: Color.AppThemeColor}}
-          labelStyle={{fontFamily: "monospace", fontWeight:"bold", fontSize: 18}}>
-            Home
-        </Button>
-      </View>
     </View>
     )
   }

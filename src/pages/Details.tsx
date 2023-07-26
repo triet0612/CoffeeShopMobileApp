@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet } from 'react-native';
 import { ImageAssets, Color } from '../Assets';
 import { Image } from 'expo-image';
 import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';

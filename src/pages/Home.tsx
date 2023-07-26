@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native"
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserMod } from '../model/Model';
 import {LoyaltyCard} from './LoyaltyCard';
 import {CoffeeCard} from './CoffeeCard';
@@ -29,12 +29,12 @@ export function Home() {
           Choose your coffee (≧∇≦)/
         </Text>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <CoffeeCard name="Black Coffee"/>
-          <CoffeeCard name="White Coffee"/>
+          <CoffeeCard name="Black Coffee" disabled={false}/>
+          <CoffeeCard name="White Coffee" disabled={false}/>
         </View>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <CoffeeCard name="Cappucino"/>
-          <CoffeeCard name="Latte"/>
+          <CoffeeCard name="Cappucino" disabled={false}/>
+          <CoffeeCard name="Latte" disabled={false}/>
         </View>
       </View>
     </View>
@@ -50,8 +50,6 @@ function UserCard(user: {Name: string}) {
         <Text style={styles.name_text}>{user.Name}</Text>
       </View>
       <View style={styles.icons}>
-        <IconButton nativeID='1' size={30} icon={"view-list-outline"} 
-          iconColor='black' onPress={() => {navigation.navigate("Order")}}/>
         <IconButton nativeID='1' size={30} icon={"cart"} 
           iconColor='black' onPress={() => {navigation.navigate("Shopping cart")}}/>
         <IconButton nativeID='2' size={30} icon={"account"} 
@@ -63,7 +61,7 @@ function UserCard(user: {Name: string}) {
 
 const styles = StyleSheet.create({
   upper_container: {
-    flex: 1,
+    flex: 1.1,
     padding: 25
   },
   down_container: {

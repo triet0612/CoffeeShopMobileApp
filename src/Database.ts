@@ -28,12 +28,12 @@ const createCart: string = `CREATE TABLE IF NOT EXISTS "Cart" (
 	"Note"	TEXT NOT NULL,
 	"Type"	TEXT NOT NULL,
 	"Number"	INTEGER NOT NULL,
-	"Status"	TEXT NOT NULL CHECK("Status" IN ("In progress", "Waiting", "Complete")),
+	"Status"	TEXT NOT NULL CHECK("Status" IN ("In progress", "Waiting", "Complete", "Redeemed")),
 	PRIMARY KEY("ID" AUTOINCREMENT),
 	FOREIGN KEY("Type") REFERENCES "Coffee"("Type")
 );`
 
-const populateUser: string = `INSERT OR IGNORE INTO "User" VALUES(1, "Dang Minh Triet", "0917550612", "triet0612@gmail.com", "123 ABC, Phuong 1, Quan 5, TPHCM", 2, 10);`
+const populateUser: string = `INSERT OR IGNORE INTO "User" VALUES(1, "Dang Minh Triet", "0917550612", "triet0612@gmail.com", "123 ABC, Phuong 1, Quan 5, TPHCM", 8, 2000);`
 const createBlackCoffee: string = `INSERT OR IGNORE INTO "Coffee" VALUES("BlackCoffee", 20000);`
 const createWhiteCoffee: string = `INSERT OR IGNORE INTO "Coffee" VALUES("WhiteCoffee", 30000);`
 const createCappucino: string = `INSERT OR IGNORE INTO "Coffee" VALUES("Cappucino", 35000);`

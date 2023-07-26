@@ -3,11 +3,11 @@ import { Image } from 'expo-image';
 import {ImageAssets} from '../Assets';
 import {NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 
-export function CoffeeCard(props: {name: string}) {
+export function CoffeeCard(props: {name: string, disabled: boolean}) {
 	const navigation = useNavigation<NavigationProp<ParamListBase>>()
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity style={styles.buttonImage}
+			<TouchableOpacity style={styles.buttonImage} disabled={props.disabled}
 				onPress={
 					() => {navigation.navigate('Details', {name: props.name})}
 				}>

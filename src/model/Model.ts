@@ -1,4 +1,4 @@
-import {DB, openDB} from "../Database";
+import {DB} from "../Database";
 
 export module UserMod {
   export type User = {
@@ -36,6 +36,34 @@ export module UserMod {
     const updateStatement = `UPDATE "User" SET "name" = ?, "Phone" = ?, "Email" = ?, "Address" = ? WHERE "UID"=1;`
     DB.transaction(
       tx => {tx.executeSql(updateStatement,[user.Name, user.Phone, user.Email, user.Address])}
+    )
+  }
+  export async function addPoints() {
+    const updateStatement = `UPDATE "User" SET "Points" = "Points" + 12 WHERE "UID"=1;`
+    DB.transaction(
+      tx => {tx.executeSql(updateStatement,[])}
+    )
+  }
+  export async function addLoyalty() {
+    const updateStatement = `UPDATE "User" SET "Loyalty" = "Loyalty" + 1 WHERE "UID"=1;`
+    DB.transaction(
+      tx => {tx.executeSql(updateStatement,[])}
+    )
+  }
+  export async function cleanLoyalty() {
+    const updateStatement = `UPDATE "User" SET "Loyalty" = "Loyalty" - 1 WHERE "UID"=1;`
+    DB.transaction(
+      tx => {tx.executeSql(updateStatement,[])}
+    )
+  }
+  export async function redeemCoffee(type: string) {
+    const updateStatement = `UPDATE "User" SET "Points" = "Points" - 120 WHERE "UID"=1;`
+    const insertRedeemed = `INSERT INTO "Cart"("Note", "Type", "Number", "Status") VALUES("0000", ?, 1, "Redeemed")`;
+    DB.transaction(
+      tx => {
+        tx.executeSql(updateStatement,[]);
+        tx.executeSql(insertRedeemed, [type]);
+      }
     )
   }
 }
@@ -91,7 +119,6 @@ export module CartMod {
         tx => {
           tx.executeSql(`SELECT * FROM "Cart" WHERE "Status"="In progress"`, [],
             (_, {rows: {_array}}) => {
-              console.log(_array)
               resolve(_array)
             }
           )
@@ -132,9 +159,8 @@ export module CartMod {
     const promise = new Promise<CartItem[]>(async (resolve, reject) => {
       DB.transaction(
         tx => {
-          tx.executeSql(`SELECT * FROM "Cart" WHERE "Status"<>"In progress"`, [],
+          tx.executeSql(`SELECT * FROM "Cart" WHERE "Status"<>"In progress" AND "Status"<>"Redeemed"`, [],
             (_, {rows: {_array}}) => {
-              console.log(_array)
               resolve(_array)
             }
           )
@@ -149,5 +175,20 @@ export module CartMod {
       tx.executeSql(`UPDATE "Cart" SET "Status" = "Complete" WHERE "Status" = "Waiting"`)
     })
     return;
+  }
+  export async function readRedeemed() {
+    const promise = new Promise<CartItem[]>(async (resolve, reject) => {
+      DB.transaction(
+        tx => {
+          tx.executeSql(`SELECT * FROM "Cart" WHERE "Status"="Redeemed"`, [],
+            (_, {rows: {_array}}) => {
+              resolve(_array)
+            }
+          )
+        },
+        error => { reject(error) }
+      )
+    })
+    return promise.then(cart_list => {return cart_list});
   }
 }

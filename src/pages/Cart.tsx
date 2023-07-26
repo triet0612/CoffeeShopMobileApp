@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 import { CartMod, CoffeeMod } from "../model/Model";
 import { Color, ImageAssets } from "../Assets";
 import { Image } from "expo-image";
-import { Button, Divider, IconButton, List } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 import { useNavigation, NavigationProp, ParamListBase } from "@react-navigation/native";
 
 export function Cart() {

@@ -15,14 +15,17 @@ export function LoyaltyCard(user: {loyalty: number}) {
   ]);
   const [num, setNum] = useState(8)
   useEffect(() => {
-    if (user !== undefined) {
-      let temp = loyalty_stamps
-      for (let i = 0; i < user.loyalty; i++) {
-        temp[i].val = true
-      }
-      setStamps(temp)
-      setNum(user.loyalty)
+    let temp = [
+      {id: 1, val: false},{id: 2, val: false},
+      {id: 3, val: false},{id: 4, val: false},
+      {id: 5, val: false},{id: 6, val: false},
+      {id: 7, val: false},{id: 8, val: false},
+    ];
+    for (let i = 0; i < user.loyalty; i++) {
+      temp[i].val = true
     }
+    setStamps(temp)
+    setNum(user.loyalty)
   }, [user])
   return (
     <View style={styles.loyalty_card}>
