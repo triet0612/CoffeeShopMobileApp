@@ -2,7 +2,15 @@
   "expo": {
     "slug": "coffeeshopmobileapp",
     "name": "coffeeshopmobileapp",
-    "sdkVersion": "48.0.0"
+    "sdkVersion": "48.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "78757dff-872e-4cd8-b33c-02a341507580"
+      }
+    },
+    "android": {
+      "package": "com.trietdang.coffeeshopmobileapp"
+    }
   },
   "name": "coffeeshopmobileapp"
 }

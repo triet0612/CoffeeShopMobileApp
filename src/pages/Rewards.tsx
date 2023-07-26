@@ -23,7 +23,6 @@ export function Rewards() {
       const b = await CartMod.readRedeemed();
       setRedeemed(b);
     })()
-    console.log(redeemed)
   }, [focus])
 
   return (

@@ -51,7 +51,7 @@ export module UserMod {
     )
   }
   export async function cleanLoyalty() {
-    const updateStatement = `UPDATE "User" SET "Loyalty" = "Loyalty" - 1 WHERE "UID"=1;`
+    const updateStatement = `UPDATE "User" SET "Loyalty" = 0 WHERE "UID"=1;`
     DB.transaction(
       tx => {tx.executeSql(updateStatement,[])}
     )
